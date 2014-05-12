@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+# Allow users to inspect/debug the builder image itself, by using:
+# $ docker run -i -t openshift/centos-ruby-builder --debug
+#
+[ "$1" == "--debug" ] && exec /bin/bash
+
+# Build the jruby application first
+#
+${HOME}/bin/prepare
+
+# Replace this script with the application runner at the end of the build.
+#
+echo "---> Build successful. Commit this image with: docker commit ${HOSTNAME} torquebox-ruby"
+cp -f ${HOME}/bin/run ${HOME}/bin/start && exit

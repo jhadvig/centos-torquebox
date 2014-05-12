@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+export app_root_dir="${HOME}/src/${APP_ROOT:-.}"
+
+export RACK_ENV=${RACK_ENV:-"production"}
+export RAILS_ENV=${RAILS_ENV:-"${RACK_ENV}"}
+
+cd $app_root_dir
+
+# Allow users to inspect/debug the builder image itself, by using:
+# $ docker run -i -t openshift/centos-ruby-builder --debug
+#
+[ "$1" == "--debug" ] && exec /bin/bash
+
+torquebox deploy $app_root_dir
+
+torquebox run -b 0.0.0.0
+
+#/opt/torquebox/start_torquebox.sh
+
